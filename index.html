@@ -1,0 +1,359 @@
+import React, { useState } from 'react';
+import { GripVertical, ArrowRight, ArrowLeft, ChevronDown, ChevronUp } from 'lucide-react';
+
+const PlanningTemplate = () => {
+  const [currentPage, setCurrentPage] = useState(0);
+  const [droppedItems, setDroppedItems] = useState({
+    sim1: Array(6).fill(null),
+    sim2: Array(6).fill(null),
+    diff1: Array(6).fill(null),
+    diff2: Array(6).fill(null)
+  });
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [showOptions, setShowOptions] = useState(false);
+
+  const pages = [
+    {
+      title: "Similarities Between Macbeth and Banquo",
+      paragraphs: [
+        { id: 'sim1', label: 'Similarity 1: Both are warriors and loyal thanes' },
+        { id: 'sim2', label: 'Similarity 2: Both receive prophecies from the witches' }
+      ],
+      dragOptions: [
+        { id: 's1', text: 'Both Macbeth and Banquo are brave warriors who serve King Duncan', type: 'Point', color: '#5D1D2E' },
+        { id: 's2', text: 'Macbeth defeats Macdonwald; both are rewarded by Duncan', type: 'Evidence', color: '#BF9A4A' },
+        { id: 's3', text: 'This shows their shared loyalty and military prowess at the start', type: 'Explain', color: '#2C3E50' },
+        { id: 's4', text: 'Shakespeare uses this to emphasize how similar circumstances can lead to different choices', type: 'Link', color: '#8E44AD' },
+        { id: 's5', text: 'The weird sisters give prophecies to both men on the heath', type: 'Evidence', color: '#BF9A4A' },
+        { id: 's6', text: 'Both characters are presented with the same supernatural temptation', type: 'Explain', color: '#2C3E50' },
+        { id: 's7', text: 'Both Macbeth and Banquo encounter the witches together', type: 'Point', color: '#5D1D2E' },
+        { id: 's8', text: 'Macbeth will be king; Banquo\'s descendants will be kings', type: 'Evidence', color: '#BF9A4A' },
+        { id: 's9', text: 'This parallel prophecy sets up the central conflict', type: 'Explain', color: '#2C3E50' },
+        { id: 's10', text: 'Their initial similarity makes their later divergence more dramatic', type: 'Link', color: '#8E44AD' },
+        { id: 's11', text: 'Both men share a strong friendship forged through battle', type: 'Point', color: '#5D1D2E' },
+        { id: 's12', text: 'They are described as comrades and equals in status', type: 'Evidence', color: '#BF9A4A' }
+      ]
+    },
+    {
+      title: "Differences Between Macbeth and Banquo",
+      paragraphs: [
+        { id: 'diff1', label: 'Difference 1: Response to the prophecies' },
+        { id: 'diff2', label: 'Difference 2: Moral choices and integrity' }
+      ],
+      dragOptions: [
+        { id: 'd1', text: 'Macbeth eagerly accepts the prophecies while Banquo remains suspicious', type: 'Point', color: '#5D1D2E' },
+        { id: 'd2', text: '"The instruments of darkness tell us truths...to betray us in deepest consequence"', type: 'Evidence', color: '#BF9A4A' },
+        { id: 'd3', text: 'Banquo immediately recognizes the danger, showing his wisdom and caution', type: 'Explain', color: '#2C3E50' },
+        { id: 'd4', text: 'This contrast highlights how character determines response to temptation', type: 'Link', color: '#8E44AD' },
+        { id: 'd5', text: 'Macbeth becomes consumed by "vaulting ambition" and kills Duncan', type: 'Evidence', color: '#BF9A4A' },
+        { id: 'd6', text: 'Macbeth\'s ambition corrupts his morality, but Banquo maintains his integrity', type: 'Point', color: '#5D1D2E' },
+        { id: 'd7', text: 'Banquo refuses to act on the prophecies despite temptation', type: 'Evidence', color: '#BF9A4A' },
+        { id: 'd8', text: 'While Macbeth\'s fatal flaw destroys him, Banquo\'s nobility preserves his honor', type: 'Explain', color: '#2C3E50' },
+        { id: 'd9', text: 'Shakespeare uses this difference to explore the power of moral choice', type: 'Link', color: '#8E44AD' },
+        { id: 'd10', text: '"I have no spur...but only vaulting ambition"', type: 'Evidence', color: '#BF9A4A' },
+        { id: 'd11', text: 'Macbeth admits ambition alone drives his actions, with no moral justification', type: 'Explain', color: '#2C3E50' },
+        { id: 'd12', text: 'Banquo chooses honor over personal gain even when tempted', type: 'Evidence', color: '#BF9A4A' }
+      ]
+    }
+  ];
+
+  const peelLabels = ['P - Point', 'E - Evidence', 'E - Explain', 'E - Evidence', 'E - Explain', 'L - Link'];
+
+  const handleDragStart = (e, item) => {
+    e.dataTransfer.setData('item', JSON.stringify(item));
+  };
+
+  const handleDrop = (e, paragraphId, index) => {
+    e.preventDefault();
+    const item = JSON.parse(e.dataTransfer.getData('item'));
+    
+    setDroppedItems(prev => {
+      const newItems = { ...prev };
+      newItems[paragraphId] = [...prev[paragraphId]];
+      newItems[paragraphId][index] = item;
+      return newItems;
+    });
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
+
+  // Mobile-friendly tap to select and place
+  const handleItemClick = (item) => {
+    if (selectedItem?.id === item.id) {
+      setSelectedItem(null);
+    } else {
+      setSelectedItem(item);
+    }
+  };
+
+  const handleSlotClick = (paragraphId, index) => {
+    if (selectedItem) {
+      setDroppedItems(prev => {
+        const newItems = { ...prev };
+        newItems[paragraphId] = [...prev[paragraphId]];
+        newItems[paragraphId][index] = selectedItem;
+        return newItems;
+      });
+      setSelectedItem(null);
+    }
+  };
+
+  const removeItem = (paragraphId, index) => {
+    setDroppedItems(prev => {
+      const newItems = { ...prev };
+      newItems[paragraphId] = [...prev[paragraphId]];
+      newItems[paragraphId][index] = null;
+      return newItems;
+    });
+  };
+
+  const currentPageData = pages[currentPage];
+
+  return (
+    <div style={{ 
+      width: '100%', 
+      minHeight: '100vh', 
+      background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
+      padding: '40px 20px',
+      fontFamily: 'Arial, sans-serif'
+    }}>
+      <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+        {/* Header */}
+        <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+          <h1 style={{ 
+            fontSize: '36px', 
+            color: '#5D1D2E', 
+            marginBottom: '10px',
+            fontWeight: 'bold'
+          }}>
+            Macbeth vs Banquo: Essay Planning Template
+          </h1>
+          <h2 style={{ fontSize: '24px', color: '#BF9A4A', marginBottom: '10px' }}>
+            {currentPageData.title}
+          </h2>
+          <p style={{ fontSize: '16px', color: '#555' }}>
+            Drag items from the right into the PEEL structure boxes
+          </p>
+        </div>
+
+        {/* Main Content */}
+        <div style={{ display: 'flex', gap: '30px' }}>
+          {/* Left Side - Drop Zones */}
+          <div style={{ flex: '2' }}>
+            {currentPageData.paragraphs.map((para, paraIndex) => (
+              <div key={para.id} style={{ marginBottom: '40px' }}>
+                <h3 style={{ 
+                  fontSize: '20px', 
+                  color: '#5D1D2E', 
+                  marginBottom: '20px',
+                  padding: '15px',
+                  background: '#fff',
+                  borderRadius: '8px',
+                  boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                  fontWeight: 'bold'
+                }}>
+                  Body Paragraph {currentPage * 2 + paraIndex + 1}: {para.label}
+                </h3>
+                
+                <div style={{ 
+                  display: 'grid', 
+                  gridTemplateColumns: 'repeat(2, 1fr)',
+                  gap: '15px'
+                }}>
+                  {droppedItems[para.id].map((item, index) => (
+                    <div
+                      key={index}
+                      onDrop={(e) => handleDrop(e, para.id, index)}
+                      onDragOver={handleDragOver}
+                      style={{
+                        background: item ? '#fff' : '#f8f9fa',
+                        border: item ? `3px solid ${item.color}` : '3px dashed #ccc',
+                        borderRadius: '8px',
+                        padding: '15px',
+                        minHeight: '120px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        cursor: item ? 'pointer' : 'default',
+                        transition: 'all 0.3s',
+                        boxShadow: item ? '0 4px 6px rgba(0,0,0,0.1)' : 'none'
+                      }}
+                      onClick={() => item && removeItem(para.id, index)}
+                    >
+                      <div style={{ 
+                        fontSize: '14px', 
+                        fontWeight: 'bold', 
+                        color: '#5D1D2E',
+                        marginBottom: '8px'
+                      }}>
+                        {peelLabels[index]}
+                      </div>
+                      {item ? (
+                        <>
+                          <div style={{ 
+                            fontSize: '12px', 
+                            color: item.color, 
+                            fontWeight: 'bold',
+                            marginBottom: '8px'
+                          }}>
+                            {item.type}
+                          </div>
+                          <div style={{ fontSize: '14px', color: '#333', flex: 1 }}>
+                            {item.text}
+                          </div>
+                          <div style={{ 
+                            fontSize: '11px', 
+                            color: '#999', 
+                            marginTop: '8px',
+                            fontStyle: 'italic'
+                          }}>
+                            Click to remove
+                          </div>
+                        </>
+                      ) : (
+                        <div style={{ 
+                          color: '#999', 
+                          fontSize: '14px',
+                          textAlign: 'center',
+                          margin: 'auto'
+                        }}>
+                          Drop here
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Right Side - Drag Options */}
+          <div style={{ flex: '1' }}>
+            <div style={{ 
+              position: 'sticky', 
+              top: '20px',
+              background: '#fff',
+              borderRadius: '12px',
+              padding: '20px',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+              maxHeight: '80vh',
+              overflowY: 'auto'
+            }}>
+              <h3 style={{ 
+                fontSize: '18px', 
+                color: '#5D1D2E', 
+                marginBottom: '20px',
+                fontWeight: 'bold'
+              }}>
+                Available Options
+              </h3>
+              <div style={{ 
+                fontSize: '12px', 
+                color: '#666',
+                marginBottom: '15px',
+                padding: '10px',
+                background: '#f8f9fa',
+                borderRadius: '6px'
+              }}>
+                <div style={{ marginBottom: '5px' }}><span style={{ color: '#5D1D2E', fontWeight: 'bold' }}>●</span> Point (P)</div>
+                <div style={{ marginBottom: '5px' }}><span style={{ color: '#BF9A4A', fontWeight: 'bold' }}>●</span> Evidence (E)</div>
+                <div style={{ marginBottom: '5px' }}><span style={{ color: '#2C3E50', fontWeight: 'bold' }}>●</span> Explain (E)</div>
+                <div><span style={{ color: '#8E44AD', fontWeight: 'bold' }}>●</span> Link (L)</div>
+              </div>
+              {currentPageData.dragOptions.map((option) => (
+                <div
+                  key={option.id}
+                  draggable
+                  onDragStart={(e) => handleDragStart(e, option)}
+                  style={{
+                    background: '#f8f9fa',
+                    border: `2px solid ${option.color}`,
+                    borderRadius: '8px',
+                    padding: '12px',
+                    marginBottom: '10px',
+                    cursor: 'grab',
+                    transition: 'all 0.2s'
+                  }}
+                  onMouseDown={(e) => e.currentTarget.style.cursor = 'grabbing'}
+                  onMouseUp={(e) => e.currentTarget.style.cursor = 'grab'}
+                >
+                  <div style={{ 
+                    display: 'flex', 
+                    alignItems: 'center',
+                    marginBottom: '6px'
+                  }}>
+                    <GripVertical size={16} style={{ color: '#999', marginRight: '8px' }} />
+                    <span style={{ 
+                      fontSize: '11px', 
+                      fontWeight: 'bold', 
+                      color: option.color 
+                    }}>
+                      {option.type}
+                    </span>
+                  </div>
+                  <div style={{ fontSize: '13px', color: '#333' }}>
+                    {option.text}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Navigation */}
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'center', 
+          gap: '20px',
+          marginTop: '40px'
+        }}>
+          <button
+            onClick={() => setCurrentPage(0)}
+            disabled={currentPage === 0}
+            style={{
+              padding: '12px 30px',
+              fontSize: '16px',
+              background: currentPage === 0 ? '#ccc' : '#5D1D2E',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: currentPage === 0 ? 'not-allowed' : 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              fontWeight: 'bold',
+              transition: 'all 0.3s'
+            }}
+          >
+            <ArrowLeft size={20} />
+            Similarities
+          </button>
+          <button
+            onClick={() => setCurrentPage(1)}
+            disabled={currentPage === 1}
+            style={{
+              padding: '12px 30px',
+              fontSize: '16px',
+              background: currentPage === 1 ? '#ccc' : '#5D1D2E',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: currentPage === 1 ? 'not-allowed' : 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              fontWeight: 'bold',
+              transition: 'all 0.3s'
+            }}
+          >
+            Differences
+            <ArrowRight size={20} />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default PlanningTemplate;
