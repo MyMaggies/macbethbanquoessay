@@ -1,359 +1,576 @@
-import React, { useState } from 'react';
-import { GripVertical, ArrowRight, ArrowLeft, ChevronDown, ChevronUp } from 'lucide-react';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Macbeth vs Banquo Essay Planning</title>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Arial, sans-serif; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
 
-const PlanningTemplate = () => {
-  const [currentPage, setCurrentPage] = useState(0);
-  const [droppedItems, setDroppedItems] = useState({
-    sim1: Array(6).fill(null),
-    sim2: Array(6).fill(null),
-    diff1: Array(6).fill(null),
-    diff2: Array(6).fill(null)
-  });
-  const [selectedItem, setSelectedItem] = useState(null);
-  const [showOptions, setShowOptions] = useState(false);
+  <script type="text/babel">
+    const { useState } = React;
 
-  const pages = [
-    {
-      title: "Similarities Between Macbeth and Banquo",
-      paragraphs: [
-        { id: 'sim1', label: 'Similarity 1: Both are warriors and loyal thanes' },
-        { id: 'sim2', label: 'Similarity 2: Both receive prophecies from the witches' }
-      ],
-      dragOptions: [
-        { id: 's1', text: 'Both Macbeth and Banquo are brave warriors who serve King Duncan', type: 'Point', color: '#5D1D2E' },
-        { id: 's2', text: 'Macbeth defeats Macdonwald; both are rewarded by Duncan', type: 'Evidence', color: '#BF9A4A' },
-        { id: 's3', text: 'This shows their shared loyalty and military prowess at the start', type: 'Explain', color: '#2C3E50' },
-        { id: 's4', text: 'Shakespeare uses this to emphasize how similar circumstances can lead to different choices', type: 'Link', color: '#8E44AD' },
-        { id: 's5', text: 'The weird sisters give prophecies to both men on the heath', type: 'Evidence', color: '#BF9A4A' },
-        { id: 's6', text: 'Both characters are presented with the same supernatural temptation', type: 'Explain', color: '#2C3E50' },
-        { id: 's7', text: 'Both Macbeth and Banquo encounter the witches together', type: 'Point', color: '#5D1D2E' },
-        { id: 's8', text: 'Macbeth will be king; Banquo\'s descendants will be kings', type: 'Evidence', color: '#BF9A4A' },
-        { id: 's9', text: 'This parallel prophecy sets up the central conflict', type: 'Explain', color: '#2C3E50' },
-        { id: 's10', text: 'Their initial similarity makes their later divergence more dramatic', type: 'Link', color: '#8E44AD' },
-        { id: 's11', text: 'Both men share a strong friendship forged through battle', type: 'Point', color: '#5D1D2E' },
-        { id: 's12', text: 'They are described as comrades and equals in status', type: 'Evidence', color: '#BF9A4A' }
-      ]
-    },
-    {
-      title: "Differences Between Macbeth and Banquo",
-      paragraphs: [
-        { id: 'diff1', label: 'Difference 1: Response to the prophecies' },
-        { id: 'diff2', label: 'Difference 2: Moral choices and integrity' }
-      ],
-      dragOptions: [
-        { id: 'd1', text: 'Macbeth eagerly accepts the prophecies while Banquo remains suspicious', type: 'Point', color: '#5D1D2E' },
-        { id: 'd2', text: '"The instruments of darkness tell us truths...to betray us in deepest consequence"', type: 'Evidence', color: '#BF9A4A' },
-        { id: 'd3', text: 'Banquo immediately recognizes the danger, showing his wisdom and caution', type: 'Explain', color: '#2C3E50' },
-        { id: 'd4', text: 'This contrast highlights how character determines response to temptation', type: 'Link', color: '#8E44AD' },
-        { id: 'd5', text: 'Macbeth becomes consumed by "vaulting ambition" and kills Duncan', type: 'Evidence', color: '#BF9A4A' },
-        { id: 'd6', text: 'Macbeth\'s ambition corrupts his morality, but Banquo maintains his integrity', type: 'Point', color: '#5D1D2E' },
-        { id: 'd7', text: 'Banquo refuses to act on the prophecies despite temptation', type: 'Evidence', color: '#BF9A4A' },
-        { id: 'd8', text: 'While Macbeth\'s fatal flaw destroys him, Banquo\'s nobility preserves his honor', type: 'Explain', color: '#2C3E50' },
-        { id: 'd9', text: 'Shakespeare uses this difference to explore the power of moral choice', type: 'Link', color: '#8E44AD' },
-        { id: 'd10', text: '"I have no spur...but only vaulting ambition"', type: 'Evidence', color: '#BF9A4A' },
-        { id: 'd11', text: 'Macbeth admits ambition alone drives his actions, with no moral justification', type: 'Explain', color: '#2C3E50' },
-        { id: 'd12', text: 'Banquo chooses honor over personal gain even when tempted', type: 'Evidence', color: '#BF9A4A' }
-      ]
-    }
-  ];
+    // Icon components
+    const GripVertical = () => (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <circle cx="9" cy="12" r="1"/><circle cx="9" cy="5" r="1"/><circle cx="9" cy="19" r="1"/>
+        <circle cx="15" cy="12" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="19" r="1"/>
+      </svg>
+    );
 
-  const peelLabels = ['P - Point', 'E - Evidence', 'E - Explain', 'E - Evidence', 'E - Explain', 'L - Link'];
+    const ArrowLeft = ({ size = 18 }) => (
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+      </svg>
+    );
 
-  const handleDragStart = (e, item) => {
-    e.dataTransfer.setData('item', JSON.stringify(item));
-  };
+    const ArrowRight = ({ size = 18 }) => (
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+      </svg>
+    );
 
-  const handleDrop = (e, paragraphId, index) => {
-    e.preventDefault();
-    const item = JSON.parse(e.dataTransfer.getData('item'));
-    
-    setDroppedItems(prev => {
-      const newItems = { ...prev };
-      newItems[paragraphId] = [...prev[paragraphId]];
-      newItems[paragraphId][index] = item;
-      return newItems;
-    });
-  };
+    const ChevronDown = ({ size = 20 }) => (
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <polyline points="6 9 12 15 18 9"/>
+      </svg>
+    );
 
-  const handleDragOver = (e) => {
-    e.preventDefault();
-  };
+    const ChevronUp = ({ size = 20 }) => (
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <polyline points="18 15 12 9 6 15"/>
+      </svg>
+    );
 
-  // Mobile-friendly tap to select and place
-  const handleItemClick = (item) => {
-    if (selectedItem?.id === item.id) {
-      setSelectedItem(null);
-    } else {
-      setSelectedItem(item);
-    }
-  };
-
-  const handleSlotClick = (paragraphId, index) => {
-    if (selectedItem) {
-      setDroppedItems(prev => {
-        const newItems = { ...prev };
-        newItems[paragraphId] = [...prev[paragraphId]];
-        newItems[paragraphId][index] = selectedItem;
-        return newItems;
+    const PlanningTemplate = () => {
+      const [currentPage, setCurrentPage] = useState(0);
+      const [droppedItems, setDroppedItems] = useState({
+        sim1: Array(6).fill(null),
+        sim2: Array(6).fill(null),
+        diff1: Array(6).fill(null),
+        diff2: Array(6).fill(null)
       });
-      setSelectedItem(null);
-    }
-  };
+      const [selectedItem, setSelectedItem] = useState(null);
+      const [showOptions, setShowOptions] = useState(false);
+      const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
-  const removeItem = (paragraphId, index) => {
-    setDroppedItems(prev => {
-      const newItems = { ...prev };
-      newItems[paragraphId] = [...prev[paragraphId]];
-      newItems[paragraphId][index] = null;
-      return newItems;
-    });
-  };
+      React.useEffect(() => {
+        const handleResize = () => setWindowWidth(window.innerWidth);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+      }, []);
 
-  const currentPageData = pages[currentPage];
+      const pages = [
+        {
+          title: "Similarities Between Macbeth and Banquo",
+          paragraphs: [
+            { id: 'sim1', label: 'Similarity 1: Both are warriors and loyal thanes' },
+            { id: 'sim2', label: 'Similarity 2: Both receive prophecies from the witches' }
+          ],
+          dragOptions: [
+            { id: 's1', text: 'Both Macbeth and Banquo are brave warriors who serve King Duncan', type: 'Point', color: '#5D1D2E' },
+            { id: 's2', text: 'Macbeth defeats Macdonwald; both are rewarded by Duncan', type: 'Evidence', color: '#BF9A4A' },
+            { id: 's3', text: 'This shows their shared loyalty and military prowess at the start', type: 'Explain', color: '#2C3E50' },
+            { id: 's4', text: 'Shakespeare uses this to emphasize how similar circumstances can lead to different choices', type: 'Link', color: '#8E44AD' },
+            { id: 's5', text: 'The weird sisters give prophecies to both men on the heath', type: 'Evidence', color: '#BF9A4A' },
+            { id: 's6', text: 'Both characters are presented with the same supernatural temptation', type: 'Explain', color: '#2C3E50' },
+            { id: 's7', text: 'Both Macbeth and Banquo encounter the witches together', type: 'Point', color: '#5D1D2E' },
+            { id: 's8', text: "Macbeth will be king; Banquo's descendants will be kings", type: 'Evidence', color: '#BF9A4A' },
+            { id: 's9', text: 'This parallel prophecy sets up the central conflict', type: 'Explain', color: '#2C3E50' },
+            { id: 's10', text: 'Their initial similarity makes their later divergence more dramatic', type: 'Link', color: '#8E44AD' },
+            { id: 's11', text: 'Both men share a strong friendship forged through battle', type: 'Point', color: '#5D1D2E' },
+            { id: 's12', text: 'They are described as comrades and equals in status', type: 'Evidence', color: '#BF9A4A' }
+          ]
+        },
+        {
+          title: "Differences Between Macbeth and Banquo",
+          paragraphs: [
+            { id: 'diff1', label: 'Difference 1: Response to the prophecies' },
+            { id: 'diff2', label: 'Difference 2: Moral choices and integrity' }
+          ],
+          dragOptions: [
+            { id: 'd1', text: 'Macbeth eagerly accepts the prophecies while Banquo remains suspicious', type: 'Point', color: '#5D1D2E' },
+            { id: 'd2', text: '"The instruments of darkness tell us truths...to betray us in deepest consequence"', type: 'Evidence', color: '#BF9A4A' },
+            { id: 'd3', text: 'Banquo immediately recognizes the danger, showing his wisdom and caution', type: 'Explain', color: '#2C3E50' },
+            { id: 'd4', text: 'This contrast highlights how character determines response to temptation', type: 'Link', color: '#8E44AD' },
+            { id: 'd5', text: 'Macbeth becomes consumed by "vaulting ambition" and kills Duncan', type: 'Evidence', color: '#BF9A4A' },
+            { id: 'd6', text: "Macbeth's ambition corrupts his morality, but Banquo maintains his integrity", type: 'Point', color: '#5D1D2E' },
+            { id: 'd7', text: 'Banquo refuses to act on the prophecies despite temptation', type: 'Evidence', color: '#BF9A4A' },
+            { id: 'd8', text: "While Macbeth's fatal flaw destroys him, Banquo's nobility preserves his honor", type: 'Explain', color: '#2C3E50' },
+            { id: 'd9', text: 'Shakespeare uses this difference to explore the power of moral choice', type: 'Link', color: '#8E44AD' },
+            { id: 'd10', text: '"I have no spur...but only vaulting ambition"', type: 'Evidence', color: '#BF9A4A' },
+            { id: 'd11', text: 'Macbeth admits ambition alone drives his actions, with no moral justification', type: 'Explain', color: '#2C3E50' },
+            { id: 'd12', text: 'Banquo chooses honor over personal gain even when tempted', type: 'Evidence', color: '#BF9A4A' }
+          ]
+        }
+      ];
 
-  return (
-    <div style={{ 
-      width: '100%', 
-      minHeight: '100vh', 
-      background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
-      padding: '40px 20px',
-      fontFamily: 'Arial, sans-serif'
-    }}>
-      <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-        {/* Header */}
-        <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-          <h1 style={{ 
-            fontSize: '36px', 
-            color: '#5D1D2E', 
-            marginBottom: '10px',
-            fontWeight: 'bold'
-          }}>
-            Macbeth vs Banquo: Essay Planning Template
-          </h1>
-          <h2 style={{ fontSize: '24px', color: '#BF9A4A', marginBottom: '10px' }}>
-            {currentPageData.title}
-          </h2>
-          <p style={{ fontSize: '16px', color: '#555' }}>
-            Drag items from the right into the PEEL structure boxes
-          </p>
-        </div>
+      const peelLabels = ['P - Point', 'E - Evidence', 'E - Explain', 'E - Evidence', 'E - Explain', 'L - Link'];
 
-        {/* Main Content */}
-        <div style={{ display: 'flex', gap: '30px' }}>
-          {/* Left Side - Drop Zones */}
-          <div style={{ flex: '2' }}>
-            {currentPageData.paragraphs.map((para, paraIndex) => (
-              <div key={para.id} style={{ marginBottom: '40px' }}>
-                <h3 style={{ 
-                  fontSize: '20px', 
-                  color: '#5D1D2E', 
-                  marginBottom: '20px',
-                  padding: '15px',
+      const handleDragStart = (e, item) => {
+        e.dataTransfer.setData('item', JSON.stringify(item));
+      };
+
+      const handleDrop = (e, paragraphId, index) => {
+        e.preventDefault();
+        const item = JSON.parse(e.dataTransfer.getData('item'));
+        
+        setDroppedItems(prev => {
+          const newItems = { ...prev };
+          newItems[paragraphId] = [...prev[paragraphId]];
+          newItems[paragraphId][index] = item;
+          return newItems;
+        });
+      };
+
+      const handleDragOver = (e) => {
+        e.preventDefault();
+      };
+
+      const handleItemClick = (item) => {
+        if (selectedItem?.id === item.id) {
+          setSelectedItem(null);
+        } else {
+          setSelectedItem(item);
+        }
+      };
+
+      const handleSlotClick = (paragraphId, index) => {
+        if (selectedItem) {
+          setDroppedItems(prev => {
+            const newItems = { ...prev };
+            newItems[paragraphId] = [...prev[paragraphId]];
+            newItems[paragraphId][index] = selectedItem;
+            return newItems;
+          });
+          setSelectedItem(null);
+          if (windowWidth < 1025) {
+            setShowOptions(false);
+          }
+        }
+      };
+
+      const removeItem = (paragraphId, index) => {
+        setDroppedItems(prev => {
+          const newItems = { ...prev };
+          newItems[paragraphId] = [...prev[paragraphId]];
+          newItems[paragraphId][index] = null;
+          return newItems;
+        });
+      };
+
+      const currentPageData = pages[currentPage];
+      const isMobile = windowWidth < 768;
+      const isTablet = windowWidth >= 768 && windowWidth < 1025;
+
+      return (
+        <div style={{ 
+          width: '100%', 
+          minHeight: '100vh', 
+          background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
+          padding: isMobile ? '15px 10px' : '20px 15px',
+          fontFamily: 'Arial, sans-serif'
+        }}>
+          <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+            {/* Header */}
+            <div style={{ textAlign: 'center', marginBottom: isMobile ? '20px' : '30px' }}>
+              <h1 style={{ 
+                fontSize: isMobile ? '22px' : isTablet ? '28px' : '32px', 
+                color: '#5D1D2E', 
+                marginBottom: '10px',
+                fontWeight: 'bold',
+                lineHeight: '1.2'
+              }}>
+                Macbeth vs Banquo Essay Planning
+              </h1>
+              <h2 style={{ 
+                fontSize: isMobile ? '16px' : isTablet ? '18px' : '20px', 
+                color: '#BF9A4A', 
+                marginBottom: '10px',
+                lineHeight: '1.3'
+              }}>
+                {currentPageData.title}
+              </h2>
+              <p style={{ 
+                fontSize: isMobile ? '13px' : '15px', 
+                color: '#555', 
+                lineHeight: '1.4',
+                padding: '0 10px'
+              }}>
+                {isMobile || isTablet ? 'Tap to select, then tap a box to place' : 'Drag items into the PEEL structure boxes'}
+              </p>
+              {selectedItem && (
+                <div style={{
+                  marginTop: '15px',
+                  padding: '10px 15px',
                   background: '#fff',
                   borderRadius: '8px',
-                  boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-                  fontWeight: 'bold'
+                  border: `3px solid ${selectedItem.color}`,
+                  display: 'inline-block',
+                  boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
+                  maxWidth: '90%'
                 }}>
-                  Body Paragraph {currentPage * 2 + paraIndex + 1}: {para.label}
-                </h3>
-                
-                <div style={{ 
-                  display: 'grid', 
-                  gridTemplateColumns: 'repeat(2, 1fr)',
-                  gap: '15px'
-                }}>
-                  {droppedItems[para.id].map((item, index) => (
-                    <div
-                      key={index}
-                      onDrop={(e) => handleDrop(e, para.id, index)}
-                      onDragOver={handleDragOver}
-                      style={{
-                        background: item ? '#fff' : '#f8f9fa',
-                        border: item ? `3px solid ${item.color}` : '3px dashed #ccc',
-                        borderRadius: '8px',
-                        padding: '15px',
-                        minHeight: '120px',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        cursor: item ? 'pointer' : 'default',
-                        transition: 'all 0.3s',
-                        boxShadow: item ? '0 4px 6px rgba(0,0,0,0.1)' : 'none'
-                      }}
-                      onClick={() => item && removeItem(para.id, index)}
-                    >
-                      <div style={{ 
-                        fontSize: '14px', 
-                        fontWeight: 'bold', 
-                        color: '#5D1D2E',
-                        marginBottom: '8px'
-                      }}>
-                        {peelLabels[index]}
-                      </div>
-                      {item ? (
-                        <>
-                          <div style={{ 
-                            fontSize: '12px', 
-                            color: item.color, 
-                            fontWeight: 'bold',
-                            marginBottom: '8px'
-                          }}>
-                            {item.type}
-                          </div>
-                          <div style={{ fontSize: '14px', color: '#333', flex: 1 }}>
-                            {item.text}
-                          </div>
-                          <div style={{ 
-                            fontSize: '11px', 
-                            color: '#999', 
-                            marginTop: '8px',
-                            fontStyle: 'italic'
-                          }}>
-                            Click to remove
-                          </div>
-                        </>
-                      ) : (
-                        <div style={{ 
-                          color: '#999', 
-                          fontSize: '14px',
-                          textAlign: 'center',
-                          margin: 'auto'
-                        }}>
-                          Drop here
-                        </div>
-                      )}
-                    </div>
-                  ))}
+                  <div style={{ fontSize: '11px', color: '#555', marginBottom: '4px' }}>Selected:</div>
+                  <div style={{ fontSize: isMobile ? '12px' : '14px', fontWeight: 'bold', color: selectedItem.color }}>
+                    {selectedItem.type}
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              )}
+            </div>
 
-          {/* Right Side - Drag Options */}
-          <div style={{ flex: '1' }}>
-            <div style={{ 
-              position: 'sticky', 
-              top: '20px',
-              background: '#fff',
-              borderRadius: '12px',
-              padding: '20px',
-              boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-              maxHeight: '80vh',
-              overflowY: 'auto'
-            }}>
-              <h3 style={{ 
-                fontSize: '18px', 
-                color: '#5D1D2E', 
-                marginBottom: '20px',
-                fontWeight: 'bold'
-              }}>
-                Available Options
-              </h3>
-              <div style={{ 
-                fontSize: '12px', 
-                color: '#666',
-                marginBottom: '15px',
-                padding: '10px',
-                background: '#f8f9fa',
-                borderRadius: '6px'
-              }}>
-                <div style={{ marginBottom: '5px' }}><span style={{ color: '#5D1D2E', fontWeight: 'bold' }}>●</span> Point (P)</div>
-                <div style={{ marginBottom: '5px' }}><span style={{ color: '#BF9A4A', fontWeight: 'bold' }}>●</span> Evidence (E)</div>
-                <div style={{ marginBottom: '5px' }}><span style={{ color: '#2C3E50', fontWeight: 'bold' }}>●</span> Explain (E)</div>
-                <div><span style={{ color: '#8E44AD', fontWeight: 'bold' }}>●</span> Link (L)</div>
-              </div>
-              {currentPageData.dragOptions.map((option) => (
-                <div
-                  key={option.id}
-                  draggable
-                  onDragStart={(e) => handleDragStart(e, option)}
+            {/* Mobile/Tablet: Toggle Options Button */}
+            {(isMobile || isTablet) && (
+              <div style={{ marginBottom: '20px' }}>
+                <button
+                  onClick={() => setShowOptions(!showOptions)}
                   style={{
-                    background: '#f8f9fa',
-                    border: `2px solid ${option.color}`,
+                    width: '100%',
+                    padding: '15px',
+                    fontSize: isMobile ? '15px' : '16px',
+                    background: '#5D1D2E',
+                    color: '#fff',
+                    border: 'none',
                     borderRadius: '8px',
-                    padding: '12px',
-                    marginBottom: '10px',
-                    cursor: 'grab',
-                    transition: 'all 0.2s'
-                  }}
-                  onMouseDown={(e) => e.currentTarget.style.cursor = 'grabbing'}
-                  onMouseUp={(e) => e.currentTarget.style.cursor = 'grab'}
-                >
-                  <div style={{ 
-                    display: 'flex', 
+                    cursor: 'pointer',
+                    fontWeight: 'bold',
+                    display: 'flex',
                     alignItems: 'center',
-                    marginBottom: '6px'
+                    justifyContent: 'center',
+                    gap: '10px',
+                    boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
+                  }}
+                >
+                  {showOptions ? 'Hide Options' : 'Show Available Options'}
+                  {showOptions ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                </button>
+              </div>
+            )}
+
+            {/* Main Content */}
+            <div style={{ 
+              display: (isMobile || isTablet) ? 'block' : 'flex',
+              gap: '30px'
+            }}>
+              {/* Available Options - Mobile/Tablet */}
+              {(isMobile || isTablet) && showOptions && (
+                <div style={{ marginBottom: '25px' }}>
+                  <div style={{ 
+                    background: '#fff',
+                    borderRadius: '12px',
+                    padding: isMobile ? '15px' : '20px',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
                   }}>
-                    <GripVertical size={16} style={{ color: '#999', marginRight: '8px' }} />
-                    <span style={{ 
-                      fontSize: '11px', 
-                      fontWeight: 'bold', 
-                      color: option.color 
+                    <h3 style={{ 
+                      fontSize: isMobile ? '16px' : '18px', 
+                      color: '#5D1D2E', 
+                      marginBottom: '12px',
+                      fontWeight: 'bold'
                     }}>
-                      {option.type}
-                    </span>
-                  </div>
-                  <div style={{ fontSize: '13px', color: '#333' }}>
-                    {option.text}
+                      Available Options
+                    </h3>
+                    <div style={{ 
+                      fontSize: isMobile ? '11px' : '12px', 
+                      color: '#666',
+                      marginBottom: '12px',
+                      padding: '8px',
+                      background: '#f8f9fa',
+                      borderRadius: '6px'
+                    }}>
+                      <div style={{ marginBottom: '4px' }}><span style={{ color: '#5D1D2E', fontWeight: 'bold' }}>●</span> Point (P)</div>
+                      <div style={{ marginBottom: '4px' }}><span style={{ color: '#BF9A4A', fontWeight: 'bold' }}>●</span> Evidence (E)</div>
+                      <div style={{ marginBottom: '4px' }}><span style={{ color: '#2C3E50', fontWeight: 'bold' }}>●</span> Explain (E)</div>
+                      <div><span style={{ color: '#8E44AD', fontWeight: 'bold' }}>●</span> Link (L)</div>
+                    </div>
+                    {currentPageData.dragOptions.map((option) => (
+                      <div
+                        key={option.id}
+                        onClick={() => handleItemClick(option)}
+                        style={{
+                          background: selectedItem?.id === option.id ? option.color + '20' : '#f8f9fa',
+                          border: selectedItem?.id === option.id ? `3px solid ${option.color}` : `2px solid ${option.color}`,
+                          borderRadius: '8px',
+                          padding: isMobile ? '10px' : '12px',
+                          marginBottom: '10px',
+                          cursor: 'pointer',
+                          transition: 'all 0.2s',
+                          transform: selectedItem?.id === option.id ? 'scale(1.02)' : 'scale(1)'
+                        }}
+                      >
+                        <div style={{ 
+                          fontSize: isMobile ? '10px' : '11px', 
+                          fontWeight: 'bold', 
+                          color: option.color,
+                          marginBottom: '6px'
+                        }}>
+                          {option.type}
+                        </div>
+                        <div style={{ fontSize: isMobile ? '12px' : '13px', color: '#333', lineHeight: '1.4' }}>
+                          {option.text}
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
-              ))}
+              )}
+
+              {/* Drop Zones */}
+              <div style={{ flex: (isMobile || isTablet) ? '1' : '2' }}>
+                {currentPageData.paragraphs.map((para, paraIndex) => (
+                  <div key={para.id} style={{ marginBottom: isMobile ? '25px' : '30px' }}>
+                    <h3 style={{ 
+                      fontSize: isMobile ? '15px' : isTablet ? '17px' : '18px', 
+                      color: '#5D1D2E', 
+                      marginBottom: '12px',
+                      padding: isMobile ? '10px' : '12px',
+                      background: '#fff',
+                      borderRadius: '8px',
+                      boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                      fontWeight: 'bold',
+                      lineHeight: '1.3'
+                    }}>
+                      Paragraph {currentPage * 2 + paraIndex + 1}: {para.label}
+                    </h3>
+                    
+                    <div style={{ 
+                      display: 'grid', 
+                      gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)',
+                      gap: isMobile ? '10px' : '12px'
+                    }}>
+                      {droppedItems[para.id].map((item, index) => (
+                        <div
+                          key={index}
+                          onDrop={(e) => handleDrop(e, para.id, index)}
+                          onDragOver={handleDragOver}
+                          onClick={() => {
+                            if (item) {
+                              removeItem(para.id, index);
+                            } else {
+                              handleSlotClick(para.id, index);
+                            }
+                          }}
+                          style={{
+                            background: item ? '#fff' : '#f8f9fa',
+                            border: item ? `3px solid ${item.color}` : selectedItem ? '3px dashed #5D1D2E' : '3px dashed #ccc',
+                            borderRadius: '8px',
+                            padding: isMobile ? '10px' : '12px',
+                            minHeight: isMobile ? '90px' : '100px',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            cursor: 'pointer',
+                            transition: 'all 0.3s',
+                            boxShadow: item ? '0 4px 6px rgba(0,0,0,0.1)' : 'none'
+                          }}
+                        >
+                          <div style={{ 
+                            fontSize: isMobile ? '11px' : '13px', 
+                            fontWeight: 'bold', 
+                            color: '#5D1D2E',
+                            marginBottom: '6px'
+                          }}>
+                            {peelLabels[index]}
+                          </div>
+                          {item ? (
+                            <>
+                              <div style={{ 
+                                fontSize: isMobile ? '10px' : '11px', 
+                                color: item.color, 
+                                fontWeight: 'bold',
+                                marginBottom: '6px'
+                              }}>
+                                {item.type}
+                              </div>
+                              <div style={{ 
+                                fontSize: isMobile ? '12px' : '13px', 
+                                color: '#333', 
+                                flex: 1, 
+                                lineHeight: '1.4' 
+                              }}>
+                                {item.text}
+                              </div>
+                              <div style={{ 
+                                fontSize: '10px', 
+                                color: '#999', 
+                                marginTop: '6px',
+                                fontStyle: 'italic'
+                              }}>
+                                Tap to remove
+                              </div>
+                            </>
+                          ) : (
+                            <div style={{ 
+                              color: '#999', 
+                              fontSize: isMobile ? '12px' : '13px',
+                              textAlign: 'center',
+                              margin: 'auto'
+                            }}>
+                              {selectedItem ? 'Tap to place here' : 'Empty slot'}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Desktop Options Panel */}
+              {!isMobile && !isTablet && (
+                <div style={{ flex: '1' }}>
+                  <div style={{ 
+                    position: 'sticky', 
+                    top: '20px',
+                    background: '#fff',
+                    borderRadius: '12px',
+                    padding: '20px',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                    maxHeight: '80vh',
+                    overflowY: 'auto'
+                  }}>
+                    <h3 style={{ 
+                      fontSize: '18px', 
+                      color: '#5D1D2E', 
+                      marginBottom: '20px',
+                      fontWeight: 'bold'
+                    }}>
+                      Available Options
+                    </h3>
+                    <div style={{ 
+                      fontSize: '12px', 
+                      color: '#666',
+                      marginBottom: '15px',
+                      padding: '10px',
+                      background: '#f8f9fa',
+                      borderRadius: '6px'
+                    }}>
+                      <div style={{ marginBottom: '5px' }}><span style={{ color: '#5D1D2E', fontWeight: 'bold' }}>●</span> Point (P)</div>
+                      <div style={{ marginBottom: '5px' }}><span style={{ color: '#BF9A4A', fontWeight: 'bold' }}>●</span> Evidence (E)</div>
+                      <div style={{ marginBottom: '5px' }}><span style={{ color: '#2C3E50', fontWeight: 'bold' }}>●</span> Explain (E)</div>
+                      <div><span style={{ color: '#8E44AD', fontWeight: 'bold' }}>●</span> Link (L)</div>
+                    </div>
+                    {currentPageData.dragOptions.map((option) => (
+                      <div
+                        key={option.id}
+                        draggable
+                        onDragStart={(e) => handleDragStart(e, option)}
+                        style={{
+                          background: '#f8f9fa',
+                          border: `2px solid ${option.color}`,
+                          borderRadius: '8px',
+                          padding: '12px',
+                          marginBottom: '10px',
+                          cursor: 'grab',
+                          transition: 'all 0.2s'
+                        }}
+                        onMouseDown={(e) => e.currentTarget.style.cursor = 'grabbing'}
+                        onMouseUp={(e) => e.currentTarget.style.cursor = 'grab'}
+                      >
+                        <div style={{ 
+                          display: 'flex', 
+                          alignItems: 'center',
+                          marginBottom: '6px'
+                        }}>
+                          <GripVertical />
+                          <span style={{ 
+                            fontSize: '11px', 
+                            fontWeight: 'bold', 
+                            color: option.color,
+                            marginLeft: '8px'
+                          }}>
+                            {option.type}
+                          </span>
+                        </div>
+                        <div style={{ fontSize: '13px', color: '#333' }}>
+                          {option.text}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Navigation */}
+            <div style={{ 
+              display: 'flex', 
+              flexDirection: isMobile ? 'column' : 'row',
+              justifyContent: 'center', 
+              gap: isMobile ? '10px' : '15px',
+              marginTop: isMobile ? '25px' : '30px'
+            }}>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (currentPage !== 0) {
+                    setCurrentPage(0);
+                    setSelectedItem(null);
+                    setShowOptions(false);
+                  }
+                }}
+                style={{
+                  padding: isMobile ? '12px 20px' : '12px 24px',
+                  fontSize: isMobile ? '14px' : '15px',
+                  background: currentPage === 0 ? '#BF9A4A' : '#5D1D2E',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  fontWeight: 'bold',
+                  transition: 'all 0.3s',
+                  opacity: currentPage === 0 ? 1 : 0.9
+                }}
+              >
+                <ArrowLeft size={18} />
+                Similarities
+              </button>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (currentPage !== 1) {
+                    setCurrentPage(1);
+                    setSelectedItem(null);
+                    setShowOptions(false);
+                  }
+                }}
+                style={{
+                  padding: isMobile ? '12px 20px' : '12px 24px',
+                  fontSize: isMobile ? '14px' : '15px',
+                  background: currentPage === 1 ? '#BF9A4A' : '#5D1D2E',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  fontWeight: 'bold',
+                  transition: 'all 0.3s',
+                  opacity: currentPage === 1 ? 1 : 0.9
+                }}
+              >
+                Differences
+                <ArrowRight size={18} />
+              </button>
             </div>
           </div>
         </div>
+      );
+    };
 
-        {/* Navigation */}
-        <div style={{ 
-          display: 'flex', 
-          justifyContent: 'center', 
-          gap: '20px',
-          marginTop: '40px'
-        }}>
-          <button
-            onClick={() => setCurrentPage(0)}
-            disabled={currentPage === 0}
-            style={{
-              padding: '12px 30px',
-              fontSize: '16px',
-              background: currentPage === 0 ? '#ccc' : '#5D1D2E',
-              color: '#fff',
-              border: 'none',
-              borderRadius: '8px',
-              cursor: currentPage === 0 ? 'not-allowed' : 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              fontWeight: 'bold',
-              transition: 'all 0.3s'
-            }}
-          >
-            <ArrowLeft size={20} />
-            Similarities
-          </button>
-          <button
-            onClick={() => setCurrentPage(1)}
-            disabled={currentPage === 1}
-            style={{
-              padding: '12px 30px',
-              fontSize: '16px',
-              background: currentPage === 1 ? '#ccc' : '#5D1D2E',
-              color: '#fff',
-              border: 'none',
-              borderRadius: '8px',
-              cursor: currentPage === 1 ? 'not-allowed' : 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              fontWeight: 'bold',
-              transition: 'all 0.3s'
-            }}
-          >
-            Differences
-            <ArrowRight size={20} />
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default PlanningTemplate;
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<PlanningTemplate />);
+  </script>
+</body>
+</html>
