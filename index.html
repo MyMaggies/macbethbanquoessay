@@ -53,10 +53,10 @@
     const PlanningTemplate = () => {
       const [currentPage, setCurrentPage] = useState(0);
       const [droppedItems, setDroppedItems] = useState({
-        sim1: Array(6).fill(null),
-        sim2: Array(6).fill(null),
-        diff1: Array(6).fill(null),
-        diff2: Array(6).fill(null)
+        sim1: Array(5).fill(null),
+        sim2: Array(5).fill(null),
+        diff1: Array(5).fill(null),
+        diff2: Array(5).fill(null)
       });
       const [selectedItem, setSelectedItem] = useState(null);
       const [showOptions, setShowOptions] = useState(false);
@@ -73,47 +73,57 @@
           title: "Similarities Between Macbeth and Banquo",
           paragraphs: [
             { id: 'sim1', label: 'Similarity 1: Both are warriors and loyal thanes' },
-            { id: 'sim2', label: 'Similarity 2: Both receive prophecies from the witches' }
+            { id: 'sim2', label: 'Similarity 2: Both encounter the supernatural prophecies' }
           ],
           dragOptions: [
-            { id: 's1', text: 'Both Macbeth and Banquo are brave warriors who serve King Duncan', type: 'Point', color: '#5D1D2E' },
-            { id: 's2', text: 'Macbeth defeats Macdonwald; both are rewarded by Duncan', type: 'Evidence', color: '#BF9A4A' },
-            { id: 's3', text: 'This shows their shared loyalty and military prowess at the start', type: 'Explain', color: '#2C3E50' },
-            { id: 's4', text: 'Shakespeare uses this to emphasize how similar circumstances can lead to different choices', type: 'Link', color: '#8E44AD' },
-            { id: 's5', text: 'The weird sisters give prophecies to both men on the heath', type: 'Evidence', color: '#BF9A4A' },
-            { id: 's6', text: 'Both characters are presented with the same supernatural temptation', type: 'Explain', color: '#2C3E50' },
-            { id: 's7', text: 'Both Macbeth and Banquo encounter the witches together', type: 'Point', color: '#5D1D2E' },
-            { id: 's8', text: "Macbeth will be king; Banquo's descendants will be kings", type: 'Evidence', color: '#BF9A4A' },
-            { id: 's9', text: 'This parallel prophecy sets up the central conflict', type: 'Explain', color: '#2C3E50' },
-            { id: 's10', text: 'Their initial similarity makes their later divergence more dramatic', type: 'Link', color: '#8E44AD' },
-            { id: 's11', text: 'Both men share a strong friendship forged through battle', type: 'Point', color: '#5D1D2E' },
-            { id: 's12', text: 'They are described as comrades and equals in status', type: 'Evidence', color: '#BF9A4A' }
+            // Similarity 1 - Warriors
+            { id: 's1', text: 'Both Macbeth and Banquo begin the play as brave warriors who demonstrate loyalty to King Duncan through their military service.', type: 'point', color: '#5D1D2E' },
+            { id: 's2', text: 'Macbeth is described as "valour\'s minion" who defeats the traitor Macdonwald in battle.', type: 'evidence-m', color: '#BF9A4A' },
+            { id: 's3', text: 'Banquo fights alongside Macbeth and is equally praised for his courage in defending Scotland.', type: 'evidence-b', color: '#BF9A4A' },
+            { id: 's4', text: 'This shared beginning establishes both characters as honorable men of similar status and reputation, which makes their later divergence more significant.', type: 'explain', color: '#2C3E50' },
+            { id: 's5', text: 'Shakespeare establishes this parallel to show that nobility and virtue are not determined by initial circumstances but by the choices characters make.', type: 'link', color: '#8E44AD' },
+            
+            // Similarity 2 - Prophecies
+            { id: 's6', text: 'Both Macbeth and Banquo are given prophecies by the weird sisters that offer them glimpses of future power.', type: 'point', color: '#5D1D2E' },
+            { id: 's7', text: 'Macbeth is told "All hail, Macbeth, that shalt be King hereafter!" and becomes "rapt" with the possibility.', type: 'evidence-m', color: '#BF9A4A' },
+            { id: 's8', text: 'Banquo is told "Thou shalt get kings, though thou be none," receiving a similar promise of dynastic greatness.', type: 'evidence-b', color: '#BF9A4A' },
+            { id: 's9', text: 'The fact that both receive supernatural knowledge places them in identical situations where they must choose how to respond to temptation.', type: 'explain', color: '#2C3E50' },
+            { id: 's10', text: 'By giving both characters the same type of prophecy, Shakespeare creates a controlled comparison that isolates character as the determining factor in their fates.', type: 'link', color: '#8E44AD' },
+
+            // Extra options (distractors)
+            { id: 's11', text: 'The witches vanish "what seemed corporal melted, as breath into the wind."', type: 'evidence-m', color: '#BF9A4A' },
+            { id: 's12', text: 'Both characters are ambitious men seeking advancement in Duncan\'s court.', type: 'point', color: '#5D1D2E' }
           ]
         },
         {
           title: "Differences Between Macbeth and Banquo",
           paragraphs: [
             { id: 'diff1', label: 'Difference 1: Response to the prophecies' },
-            { id: 'diff2', label: 'Difference 2: Moral choices and integrity' }
+            { id: 'diff2', label: 'Difference 2: Moral integrity under temptation' }
           ],
           dragOptions: [
-            { id: 'd1', text: 'Macbeth eagerly accepts the prophecies while Banquo remains suspicious', type: 'Point', color: '#5D1D2E' },
-            { id: 'd2', text: '"The instruments of darkness tell us truths...to betray us in deepest consequence"', type: 'Evidence', color: '#BF9A4A' },
-            { id: 'd3', text: 'Banquo immediately recognizes the danger, showing his wisdom and caution', type: 'Explain', color: '#2C3E50' },
-            { id: 'd4', text: 'This contrast highlights how character determines response to temptation', type: 'Link', color: '#8E44AD' },
-            { id: 'd5', text: 'Macbeth becomes consumed by "vaulting ambition" and kills Duncan', type: 'Evidence', color: '#BF9A4A' },
-            { id: 'd6', text: "Macbeth's ambition corrupts his morality, but Banquo maintains his integrity", type: 'Point', color: '#5D1D2E' },
-            { id: 'd7', text: 'Banquo refuses to act on the prophecies despite temptation', type: 'Evidence', color: '#BF9A4A' },
-            { id: 'd8', text: "While Macbeth's fatal flaw destroys him, Banquo's nobility preserves his honor", type: 'Explain', color: '#2C3E50' },
-            { id: 'd9', text: 'Shakespeare uses this difference to explore the power of moral choice', type: 'Link', color: '#8E44AD' },
-            { id: 'd10', text: '"I have no spur...but only vaulting ambition"', type: 'Evidence', color: '#BF9A4A' },
-            { id: 'd11', text: 'Macbeth admits ambition alone drives his actions, with no moral justification', type: 'Explain', color: '#2C3E50' },
-            { id: 'd12', text: 'Banquo chooses honor over personal gain even when tempted', type: 'Evidence', color: '#BF9A4A' }
+            // Difference 1 - Response
+            { id: 'd1', text: 'Macbeth and Banquo respond to the witches\' prophecies in fundamentally different ways, revealing their contrasting characters.', type: 'point', color: '#5D1D2E' },
+            { id: 'd2', text: 'Macbeth becomes obsessed with the prophecy, and later admits his "vaulting ambition" is his only motivation for murdering Duncan.', type: 'evidence-m', color: '#BF9A4A' },
+            { id: 'd3', text: 'Banquo immediately warns that "the instruments of darkness tell us truths, win us with honest trifles, to betray us in deepest consequence."', type: 'evidence-b', color: '#BF9A4A' },
+            { id: 'd4', text: 'While Macbeth allows the prophecy to awaken his ambition and drive him to murder, Banquo recognizes the danger and maintains his skepticism of supernatural forces.', type: 'explain', color: '#2C3E50' },
+            { id: 'd5', text: 'This contrast demonstrates that external temptation alone does not determine action; rather, it is internal character that decides whether one succumbs to or resists evil.', type: 'link', color: '#8E44AD' },
+
+            // Difference 2 - Moral integrity
+            { id: 'd6', text: 'Under the pressure of temptation and opportunity, Macbeth\'s morality collapses while Banquo\'s integrity remains firm.', type: 'point', color: '#5D1D2E' },
+            { id: 'd7', text: 'Macbeth descends into tyranny, becoming a murderer whom even Lady Macbeth cannot chastise or control by the play\'s end.', type: 'evidence-m', color: '#BF9A4A' },
+            { id: 'd8', text: 'Banquo, despite similar temptations, prays "restrain in me the cursed thoughts that nature gives way to in repose," actively fighting against evil impulses.', type: 'evidence-b', color: '#BF9A4A' },
+            { id: 'd9', text: 'Macbeth\'s moral deterioration transforms him from honored thane to "dismal" tyrant, whereas Banquo dies with his honor intact, demonstrating the power of moral choice.', type: 'explain', color: '#2C3E50' },
+            { id: 'd10', text: 'Shakespeare uses this stark difference to argue that true nobility lies not in rank or prophecy, but in the moral decisions one makes when faced with temptation.', type: 'link', color: '#8E44AD' },
+
+            // Extra options
+            { id: 'd11', text: 'Macbeth receives the title of Thane of Cawdor, which seems to confirm the witches\' prophecy.', type: 'evidence-m', color: '#BF9A4A' },
+            { id: 'd12', text: 'Duncan is described as a "peerless" king, making his murder even more heinous.', type: 'evidence-m', color: '#BF9A4A' }
           ]
         }
       ];
 
-      const peelLabels = ['P - Point', 'E - Evidence', 'E - Explain', 'E - Evidence', 'E - Explain', 'L - Link'];
+      const peelLabels = ['Point', 'Evidence (Macbeth)', 'Evidence (Banquo)', 'Explanation', 'Link'];
 
       const handleDragStart = (e, item) => {
         e.dataTransfer.setData('item', JSON.stringify(item));
@@ -205,7 +215,16 @@
                 lineHeight: '1.4',
                 padding: '0 10px'
               }}>
-                {isMobile || isTablet ? 'Tap to select, then tap a box to place' : 'Drag items into the PEEL structure boxes'}
+                {isMobile || isTablet ? 'Tap to select, then tap a box to place' : 'Drag items into the correct boxes'}
+              </p>
+              <p style={{ 
+                fontSize: isMobile ? '12px' : '14px', 
+                color: '#666', 
+                lineHeight: '1.4',
+                padding: '5px 10px',
+                fontStyle: 'italic'
+              }}>
+                Hint: Each paragraph needs Point → Evidence (Macbeth) → Evidence (Banquo) → Explanation → Link
               </p>
               {selectedItem && (
                 <div style={{
@@ -218,10 +237,7 @@
                   boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
                   maxWidth: '90%'
                 }}>
-                  <div style={{ fontSize: '11px', color: '#555', marginBottom: '4px' }}>Selected:</div>
-                  <div style={{ fontSize: isMobile ? '12px' : '14px', fontWeight: 'bold', color: selectedItem.color }}>
-                    {selectedItem.type}
-                  </div>
+                  <div style={{ fontSize: '11px', color: '#555', marginBottom: '4px' }}>Selected item</div>
                 </div>
               )}
             </div>
@@ -284,10 +300,7 @@
                       background: '#f8f9fa',
                       borderRadius: '6px'
                     }}>
-                      <div style={{ marginBottom: '4px' }}><span style={{ color: '#5D1D2E', fontWeight: 'bold' }}>●</span> Point (P)</div>
-                      <div style={{ marginBottom: '4px' }}><span style={{ color: '#BF9A4A', fontWeight: 'bold' }}>●</span> Evidence (E)</div>
-                      <div style={{ marginBottom: '4px' }}><span style={{ color: '#2C3E50', fontWeight: 'bold' }}>●</span> Explain (E)</div>
-                      <div><span style={{ color: '#8E44AD', fontWeight: 'bold' }}>●</span> Link (L)</div>
+                      Drag or tap to select. Colors are just for organization - you must decide which is which!
                     </div>
                     {currentPageData.dragOptions.map((option) => (
                       <div
@@ -304,14 +317,6 @@
                           transform: selectedItem?.id === option.id ? 'scale(1.02)' : 'scale(1)'
                         }}
                       >
-                        <div style={{ 
-                          fontSize: isMobile ? '10px' : '11px', 
-                          fontWeight: 'bold', 
-                          color: option.color,
-                          marginBottom: '6px'
-                        }}>
-                          {option.type}
-                        </div>
                         <div style={{ fontSize: isMobile ? '12px' : '13px', color: '#333', lineHeight: '1.4' }}>
                           {option.text}
                         </div>
@@ -366,7 +371,8 @@
                             flexDirection: 'column',
                             cursor: 'pointer',
                             transition: 'all 0.3s',
-                            boxShadow: item ? '0 4px 6px rgba(0,0,0,0.1)' : 'none'
+                            boxShadow: item ? '0 4px 6px rgba(0,0,0,0.1)' : 'none',
+                            gridColumn: index === 4 ? (isMobile ? 'auto' : 'span 2') : 'auto'
                           }}
                         >
                           <div style={{ 
@@ -379,14 +385,6 @@
                           </div>
                           {item ? (
                             <>
-                              <div style={{ 
-                                fontSize: isMobile ? '10px' : '11px', 
-                                color: item.color, 
-                                fontWeight: 'bold',
-                                marginBottom: '6px'
-                              }}>
-                                {item.type}
-                              </div>
                               <div style={{ 
                                 fontSize: isMobile ? '12px' : '13px', 
                                 color: '#333', 
@@ -411,7 +409,7 @@
                               textAlign: 'center',
                               margin: 'auto'
                             }}>
-                              {selectedItem ? 'Tap to place here' : 'Empty slot'}
+                              {selectedItem ? 'Tap to place here' : 'Empty'}
                             </div>
                           )}
                         </div>
@@ -450,10 +448,7 @@
                       background: '#f8f9fa',
                       borderRadius: '6px'
                     }}>
-                      <div style={{ marginBottom: '5px' }}><span style={{ color: '#5D1D2E', fontWeight: 'bold' }}>●</span> Point (P)</div>
-                      <div style={{ marginBottom: '5px' }}><span style={{ color: '#BF9A4A', fontWeight: 'bold' }}>●</span> Evidence (E)</div>
-                      <div style={{ marginBottom: '5px' }}><span style={{ color: '#2C3E50', fontWeight: 'bold' }}>●</span> Explain (E)</div>
-                      <div><span style={{ color: '#8E44AD', fontWeight: 'bold' }}>●</span> Link (L)</div>
+                      Colors are just for organization. You must decide which item fits where!
                     </div>
                     {currentPageData.dragOptions.map((option) => (
                       <div
@@ -478,16 +473,8 @@
                           marginBottom: '6px'
                         }}>
                           <GripVertical />
-                          <span style={{ 
-                            fontSize: '11px', 
-                            fontWeight: 'bold', 
-                            color: option.color,
-                            marginLeft: '8px'
-                          }}>
-                            {option.type}
-                          </span>
                         </div>
-                        <div style={{ fontSize: '13px', color: '#333' }}>
+                        <div style={{ fontSize: '13px', color: '#333', lineHeight: '1.4' }}>
                           {option.text}
                         </div>
                       </div>
