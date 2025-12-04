@@ -105,19 +105,24 @@
             { id: 'intro', label: 'Build Your Introduction' }
           ],
           dragOptions: [
-            // CORRECT OPTIONS
+            // OPENING SENTENCES (5 options - jumbled, 2 wrong, 3 varying quality)
+            { id: 'i2', text: 'Macbeth is a play written by William Shakespeare about two Scottish thanes.', type: 'opening', color: '#5D1D2E', correct: false },
             { id: 'i1', text: 'In Shakespeare\'s tragedy Macbeth, the contrasting fates of Macbeth and Banquo reveal the power of moral choice when faced with supernatural temptation.', type: 'opening', color: '#5D1D2E', correct: true },
-            { id: 'i2', text: 'This essay will examine their similarities as brave warriors and loyal thanes, as well as their contrasting responses to the witches\' prophecies and the resulting moral choices each man makes.', type: 'summary', color: '#BF9A4A', correct: true },
-            { id: 'i3', text: 'While both men start as honorable warriors who receive similar prophecies, their different responses reveal that moral character, not circumstance or destiny, determines one\'s fate.', type: 'thesis', color: '#2C3E50', correct: true },
+            { id: 'i4', text: 'In the play Macbeth, Shakespeare explores the characters Macbeth and Banquo and their different responses to the witches.', type: 'opening', color: '#5D1D2E', correct: 'partial' },
+            { id: 'i3', text: 'This essay will compare and contrast Macbeth and Banquo.', type: 'opening', color: '#5D1D2E', correct: false },
+            { id: 'i5', text: 'William Shakespeare\'s Macbeth presents two characters, Macbeth and Banquo, who face similar prophecies but make different choices.', type: 'opening', color: '#5D1D2E', correct: 'partial' },
             
-            // INCORRECT OPTIONS
-            { id: 'i4', text: 'Macbeth is a play written by William Shakespeare about two Scottish thanes.', type: 'opening', color: '#5D1D2E', correct: false },
-            { id: 'i5', text: 'This essay will compare and contrast Macbeth and Banquo in the play Macbeth.', type: 'opening', color: '#5D1D2E', correct: false },
-            { id: 'i6', text: 'There are many similarities and differences between the two characters.', type: 'summary', color: '#BF9A4A', correct: false },
-            { id: 'i7', text: 'This essay will discuss important themes in Macbeth including ambition, power, and betrayal.', type: 'summary', color: '#BF9A4A', correct: false },
-            { id: 'i8', text: 'Macbeth and Banquo are both important characters who make different choices.', type: 'thesis', color: '#2C3E50', correct: false },
-            { id: 'i9', text: 'Shakespeare shows that ambition is dangerous and can lead to terrible consequences.', type: 'thesis', color: '#2C3E50', correct: false },
-            { id: 'i10', text: 'In conclusion, Macbeth and Banquo are very different from each other.', type: 'thesis', color: '#2C3E50', correct: false }
+            // SUMMARY OF CONTENTS (4 options - jumbled)
+            { id: 'i7', text: 'There are many similarities and differences between the two characters.', type: 'summary', color: '#BF9A4A', correct: false },
+            { id: 'i6', text: 'This essay will examine their similarities as brave warriors and loyal thanes, as well as their contrasting responses to the witches\' prophecies and the resulting moral choices each man makes.', type: 'summary', color: '#BF9A4A', correct: true },
+            { id: 'i9', text: 'Both characters start as soldiers, but one becomes evil while the other stays good.', type: 'summary', color: '#BF9A4A', correct: false },
+            { id: 'i8', text: 'This essay will discuss their shared military background and their different reactions to prophecy.', type: 'summary', color: '#BF9A4A', correct: 'partial' },
+            
+            // THESIS STATEMENTS (4 options - jumbled)
+            { id: 'i11', text: 'Macbeth and Banquo are both important characters who make different choices.', type: 'thesis', color: '#2C3E50', correct: false },
+            { id: 'i10', text: 'While both men start as honorable warriors who receive similar prophecies, their different responses reveal that moral character, not circumstance or destiny, determines one\'s fate.', type: 'thesis', color: '#2C3E50', correct: true },
+            { id: 'i13', text: 'In conclusion, the two characters are very different from each other in many ways.', type: 'thesis', color: '#2C3E50', correct: false },
+            { id: 'i12', text: 'Although both men are warriors, Macbeth\'s ambition leads him to murder while Banquo remains loyal.', type: 'thesis', color: '#2C3E50', correct: 'partial' }
           ]
         },
         {
@@ -367,31 +372,72 @@
                       background: '#f8f9fa',
                       borderRadius: '6px'
                     }}>
-                      Drag or tap to select. Colors are just for organization - you must decide which is which!
+                      {currentPageData.isIntro ? 
+                        'Options are grouped and color-coded by type. Choose the best one from each group!' : 
+                        'Drag or tap to select. Colors are just for organization - you must decide which is which!'
+                      }
                     </div>
-                    {currentPageData.dragOptions.map((option) => (
-                      <div
-                        key={option.id}
-                        onClick={() => handleItemClick(option)}
-                        className="draggable"
-                        style={{
-                          background: selectedItem?.id === option.id ? option.color + '20' : '#f8f9fa',
-                          border: selectedItem?.id === option.id ? `3px solid ${option.color}` : `2px solid ${option.color}`,
-                          borderRadius: '8px',
-                          padding: isMobile ? '12px' : '14px',
-                          marginBottom: '10px',
-                          cursor: 'pointer',
-                          transition: 'all 0.2s',
-                          transform: selectedItem?.id === option.id ? 'scale(1.02)' : 'scale(1)',
-                          minHeight: '48px',
-                          WebkitTapHighlightColor: 'transparent'
-                        }}
-                      >
-                        <div style={{ fontSize: isMobile ? '12px' : '13px', color: '#333', lineHeight: '1.4' }}>
-                          {option.text}
-                        </div>
-                      </div>
-                    ))}
+                    {currentPageData.isIntro && (
+                      <h4 style={{ 
+                        fontSize: isMobile ? '13px' : '14px',
+                        color: '#5D1D2E',
+                        margin: '0 0 10px 0',
+                        fontWeight: 'bold',
+                        borderBottom: '2px solid #5D1D2E',
+                        paddingBottom: '4px'
+                      }}>Opening Sentences</h4>
+                    )}
+                    {currentPageData.dragOptions.map((option, idx) => {
+                      const showSummaryHeader = currentPageData.isIntro && option.type === 'summary' && 
+                        (idx === 0 || currentPageData.dragOptions[idx - 1].type !== 'summary');
+                      const showThesisHeader = currentPageData.isIntro && option.type === 'thesis' && 
+                        (idx === 0 || currentPageData.dragOptions[idx - 1].type !== 'thesis');
+                      
+                      return (
+                        <React.Fragment key={option.id}>
+                          {showSummaryHeader && (
+                            <h4 style={{ 
+                              fontSize: isMobile ? '13px' : '14px',
+                              color: '#BF9A4A',
+                              margin: '15px 0 10px 0',
+                              fontWeight: 'bold',
+                              borderBottom: '2px solid #BF9A4A',
+                              paddingBottom: '4px'
+                            }}>Summary of Contents</h4>
+                          )}
+                          {showThesisHeader && (
+                            <h4 style={{ 
+                              fontSize: isMobile ? '13px' : '14px',
+                              color: '#2C3E50',
+                              margin: '15px 0 10px 0',
+                              fontWeight: 'bold',
+                              borderBottom: '2px solid #2C3E50',
+                              paddingBottom: '4px'
+                            }}>Thesis Statements</h4>
+                          )}
+                          <div
+                            onClick={() => handleItemClick(option)}
+                            className="draggable"
+                            style={{
+                              background: selectedItem?.id === option.id ? option.color + '20' : '#f8f9fa',
+                              border: selectedItem?.id === option.id ? `3px solid ${option.color}` : `2px solid ${option.color}`,
+                              borderRadius: '8px',
+                              padding: isMobile ? '12px' : '14px',
+                              marginBottom: '10px',
+                              cursor: 'pointer',
+                              transition: 'all 0.2s',
+                              transform: selectedItem?.id === option.id ? 'scale(1.02)' : 'scale(1)',
+                              minHeight: '48px',
+                              WebkitTapHighlightColor: 'transparent'
+                            }}
+                          >
+                            <div style={{ fontSize: isMobile ? '12px' : '13px', color: '#333', lineHeight: '1.4' }}>
+                              {option.text}
+                            </div>
+                          </div>
+                        </React.Fragment>
+                      );
+                    })}
                   </div>
                 </div>
               )}
@@ -522,39 +568,80 @@
                       background: '#f8f9fa',
                       borderRadius: '6px'
                     }}>
-                      Colors are just for organization. You must decide which item fits where!
+                      {currentPageData.isIntro ? 
+                        'Options are grouped and color-coded by type. Choose the best one from each group!' : 
+                        'Colors are just for organization. You must decide which item fits where!'
+                      }
                     </div>
-                    {currentPageData.dragOptions.map((option) => (
-                      <div
-                        key={option.id}
-                        draggable
-                        className="draggable"
-                        onDragStart={(e) => handleDragStart(e, option)}
-                        style={{
-                          background: '#f8f9fa',
-                          border: `2px solid ${option.color}`,
-                          borderRadius: '8px',
-                          padding: '14px',
-                          marginBottom: '10px',
-                          cursor: 'grab',
-                          transition: 'all 0.2s',
-                          minHeight: '48px'
-                        }}
-                        onMouseDown={(e) => e.currentTarget.style.cursor = 'grabbing'}
-                        onMouseUp={(e) => e.currentTarget.style.cursor = 'grab'}
-                      >
-                        <div style={{ 
-                          display: 'flex', 
-                          alignItems: 'center',
-                          marginBottom: '6px'
-                        }}>
-                          <GripVertical />
-                        </div>
-                        <div style={{ fontSize: '13px', color: '#333', lineHeight: '1.4' }}>
-                          {option.text}
-                        </div>
-                      </div>
-                    ))}
+                    {currentPageData.isIntro && (
+                      <h4 style={{ 
+                        fontSize: '14px',
+                        color: '#5D1D2E',
+                        margin: '0 0 10px 0',
+                        fontWeight: 'bold',
+                        borderBottom: '2px solid #5D1D2E',
+                        paddingBottom: '4px'
+                      }}>Opening Sentences</h4>
+                    )}
+                    {currentPageData.dragOptions.map((option, idx) => {
+                      const showSummaryHeader = currentPageData.isIntro && option.type === 'summary' && 
+                        (idx === 0 || currentPageData.dragOptions[idx - 1].type !== 'summary');
+                      const showThesisHeader = currentPageData.isIntro && option.type === 'thesis' && 
+                        (idx === 0 || currentPageData.dragOptions[idx - 1].type !== 'thesis');
+                      
+                      return (
+                        <React.Fragment key={option.id}>
+                          {showSummaryHeader && (
+                            <h4 style={{ 
+                              fontSize: '14px',
+                              color: '#BF9A4A',
+                              margin: '15px 0 10px 0',
+                              fontWeight: 'bold',
+                              borderBottom: '2px solid #BF9A4A',
+                              paddingBottom: '4px'
+                            }}>Summary of Contents</h4>
+                          )}
+                          {showThesisHeader && (
+                            <h4 style={{ 
+                              fontSize: '14px',
+                              color: '#2C3E50',
+                              margin: '15px 0 10px 0',
+                              fontWeight: 'bold',
+                              borderBottom: '2px solid #2C3E50',
+                              paddingBottom: '4px'
+                            }}>Thesis Statements</h4>
+                          )}
+                          <div
+                            draggable
+                            className="draggable"
+                            onDragStart={(e) => handleDragStart(e, option)}
+                            style={{
+                              background: '#f8f9fa',
+                              border: `2px solid ${option.color}`,
+                              borderRadius: '8px',
+                              padding: '14px',
+                              marginBottom: '10px',
+                              cursor: 'grab',
+                              transition: 'all 0.2s',
+                              minHeight: '48px'
+                            }}
+                            onMouseDown={(e) => e.currentTarget.style.cursor = 'grabbing'}
+                            onMouseUp={(e) => e.currentTarget.style.cursor = 'grab'}
+                          >
+                            <div style={{ 
+                              display: 'flex', 
+                              alignItems: 'center',
+                              marginBottom: '6px'
+                            }}>
+                              <GripVertical />
+                            </div>
+                            <div style={{ fontSize: '13px', color: '#333', lineHeight: '1.4' }}>
+                              {option.text}
+                            </div>
+                          </div>
+                        </React.Fragment>
+                      );
+                    })}
                   </div>
                 </div>
               )}
