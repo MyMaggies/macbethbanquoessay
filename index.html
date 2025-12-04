@@ -2,14 +2,42 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
   <title>Macbeth vs Banquo Essay Planning</title>
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <style>
-    * { box-sizing: border-box; }
-    body { margin: 0; font-family: Arial, sans-serif; }
+    * { 
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+    }
+    body { 
+      margin: 0; 
+      font-family: Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overscroll-behavior: none;
+    }
+    button, .draggable, .droppable {
+      touch-action: manipulation;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+    .draggable:active {
+      opacity: 0.7;
+    }
+    @media (hover: none) and (pointer: coarse) {
+      button {
+        min-height: 48px;
+        min-width: 48px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -53,6 +81,7 @@
     const PlanningTemplate = () => {
       const [currentPage, setCurrentPage] = useState(0);
       const [droppedItems, setDroppedItems] = useState({
+        intro: Array(3).fill(null),
         sim1: Array(5).fill(null),
         sim2: Array(5).fill(null),
         diff1: Array(5).fill(null),
@@ -69,6 +98,28 @@
       }, []);
 
       const pages = [
+        {
+          title: "Introduction Planning",
+          isIntro: true,
+          paragraphs: [
+            { id: 'intro', label: 'Build Your Introduction' }
+          ],
+          dragOptions: [
+            // CORRECT OPTIONS
+            { id: 'i1', text: 'In Shakespeare\'s tragedy Macbeth, the contrasting fates of Macbeth and Banquo reveal the power of moral choice when faced with supernatural temptation.', type: 'opening', color: '#5D1D2E', correct: true },
+            { id: 'i2', text: 'This essay will examine their similarities as brave warriors and loyal thanes, as well as their contrasting responses to the witches\' prophecies and the resulting moral choices each man makes.', type: 'summary', color: '#BF9A4A', correct: true },
+            { id: 'i3', text: 'While both men start as honorable warriors who receive similar prophecies, their different responses reveal that moral character, not circumstance or destiny, determines one\'s fate.', type: 'thesis', color: '#2C3E50', correct: true },
+            
+            // INCORRECT OPTIONS
+            { id: 'i4', text: 'Macbeth is a play written by William Shakespeare about two Scottish thanes.', type: 'opening', color: '#5D1D2E', correct: false },
+            { id: 'i5', text: 'This essay will compare and contrast Macbeth and Banquo in the play Macbeth.', type: 'opening', color: '#5D1D2E', correct: false },
+            { id: 'i6', text: 'There are many similarities and differences between the two characters.', type: 'summary', color: '#BF9A4A', correct: false },
+            { id: 'i7', text: 'This essay will discuss important themes in Macbeth including ambition, power, and betrayal.', type: 'summary', color: '#BF9A4A', correct: false },
+            { id: 'i8', text: 'Macbeth and Banquo are both important characters who make different choices.', type: 'thesis', color: '#2C3E50', correct: false },
+            { id: 'i9', text: 'Shakespeare shows that ambition is dangerous and can lead to terrible consequences.', type: 'thesis', color: '#2C3E50', correct: false },
+            { id: 'i10', text: 'In conclusion, Macbeth and Banquo are very different from each other.', type: 'thesis', color: '#2C3E50', correct: false }
+          ]
+        },
         {
           title: "Similarities Between Macbeth and Banquo",
           paragraphs: [
@@ -124,6 +175,7 @@
       ];
 
       const peelLabels = ['Point', 'Evidence (Macbeth)', 'Evidence (Banquo)', 'Explanation', 'Link'];
+      const introLabels = ['Opening Sentence', 'Summary of Contents', 'Thesis Statement'];
 
       const handleDragStart = (e, item) => {
         e.dataTransfer.setData('item', JSON.stringify(item));
@@ -217,15 +269,28 @@
               }}>
                 {isMobile || isTablet ? 'Tap to select, then tap a box to place' : 'Drag items into the correct boxes'}
               </p>
-              <p style={{ 
-                fontSize: isMobile ? '12px' : '14px', 
-                color: '#666', 
-                lineHeight: '1.4',
-                padding: '5px 10px',
-                fontStyle: 'italic'
-              }}>
-                Hint: Each paragraph needs Point → Evidence (Macbeth) → Evidence (Banquo) → Explanation → Link
-              </p>
+              {!currentPageData.isIntro && (
+                <p style={{ 
+                  fontSize: isMobile ? '12px' : '14px', 
+                  color: '#666', 
+                  lineHeight: '1.4',
+                  padding: '5px 10px',
+                  fontStyle: 'italic'
+                }}>
+                  Hint: Each paragraph needs Point → Evidence (Macbeth) → Evidence (Banquo) → Explanation → Link
+                </p>
+              )}
+              {currentPageData.isIntro && (
+                <p style={{ 
+                  fontSize: isMobile ? '12px' : '14px', 
+                  color: '#666', 
+                  lineHeight: '1.4',
+                  padding: '5px 10px',
+                  fontStyle: 'italic'
+                }}>
+                  Hint: Choose the best opening sentence, summary, and thesis statement
+                </p>
+              )}
               {selectedItem && (
                 <div style={{
                   marginTop: '15px',
@@ -261,7 +326,9 @@
                     alignItems: 'center',
                     justifyContent: 'center',
                     gap: '10px',
-                    boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
+                    boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
+                    minHeight: '48px',
+                    touchAction: 'manipulation'
                   }}
                 >
                   {showOptions ? 'Hide Options' : 'Show Available Options'}
@@ -306,15 +373,18 @@
                       <div
                         key={option.id}
                         onClick={() => handleItemClick(option)}
+                        className="draggable"
                         style={{
                           background: selectedItem?.id === option.id ? option.color + '20' : '#f8f9fa',
                           border: selectedItem?.id === option.id ? `3px solid ${option.color}` : `2px solid ${option.color}`,
                           borderRadius: '8px',
-                          padding: isMobile ? '10px' : '12px',
+                          padding: isMobile ? '12px' : '14px',
                           marginBottom: '10px',
                           cursor: 'pointer',
                           transition: 'all 0.2s',
-                          transform: selectedItem?.id === option.id ? 'scale(1.02)' : 'scale(1)'
+                          transform: selectedItem?.id === option.id ? 'scale(1.02)' : 'scale(1)',
+                          minHeight: '48px',
+                          WebkitTapHighlightColor: 'transparent'
                         }}
                       >
                         <div style={{ fontSize: isMobile ? '12px' : '13px', color: '#333', lineHeight: '1.4' }}>
@@ -341,17 +411,19 @@
                       fontWeight: 'bold',
                       lineHeight: '1.3'
                     }}>
-                      Paragraph {currentPage * 2 + paraIndex + 1}: {para.label}
+                      {currentPageData.isIntro ? para.label : `Paragraph ${currentPage * 2 + paraIndex}: ${para.label}`}
                     </h3>
                     
                     <div style={{ 
-                      display: 'grid', 
-                      gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)',
+                      display: currentPageData.isIntro ? 'flex' : 'grid',
+                      flexDirection: currentPageData.isIntro ? 'column' : undefined,
+                      gridTemplateColumns: currentPageData.isIntro ? undefined : (isMobile ? '1fr' : 'repeat(2, 1fr)'),
                       gap: isMobile ? '10px' : '12px'
                     }}>
                       {droppedItems[para.id].map((item, index) => (
                         <div
                           key={index}
+                          className="droppable"
                           onDrop={(e) => handleDrop(e, para.id, index)}
                           onDragOver={handleDragOver}
                           onClick={() => {
@@ -365,14 +437,16 @@
                             background: item ? '#fff' : '#f8f9fa',
                             border: item ? `3px solid ${item.color}` : selectedItem ? '3px dashed #5D1D2E' : '3px dashed #ccc',
                             borderRadius: '8px',
-                            padding: isMobile ? '10px' : '12px',
-                            minHeight: isMobile ? '90px' : '100px',
+                            padding: isMobile ? '12px' : '14px',
+                            minHeight: currentPageData.isIntro ? (isMobile ? '100px' : '120px') : (isMobile ? '100px' : '110px'),
                             display: 'flex',
                             flexDirection: 'column',
                             cursor: 'pointer',
                             transition: 'all 0.3s',
                             boxShadow: item ? '0 4px 6px rgba(0,0,0,0.1)' : 'none',
-                            gridColumn: index === 4 ? (isMobile ? 'auto' : 'span 2') : 'auto'
+                            gridColumn: (!currentPageData.isIntro && index === 4) ? (isMobile ? 'auto' : 'span 2') : 'auto',
+                            WebkitTapHighlightColor: 'transparent',
+                            touchAction: 'manipulation'
                           }}
                         >
                           <div style={{ 
@@ -381,7 +455,7 @@
                             color: '#5D1D2E',
                             marginBottom: '6px'
                           }}>
-                            {peelLabels[index]}
+                            {currentPageData.isIntro ? introLabels[index] : peelLabels[index]}
                           </div>
                           {item ? (
                             <>
@@ -454,15 +528,17 @@
                       <div
                         key={option.id}
                         draggable
+                        className="draggable"
                         onDragStart={(e) => handleDragStart(e, option)}
                         style={{
                           background: '#f8f9fa',
                           border: `2px solid ${option.color}`,
                           borderRadius: '8px',
-                          padding: '12px',
+                          padding: '14px',
                           marginBottom: '10px',
                           cursor: 'grab',
-                          transition: 'all 0.2s'
+                          transition: 'all 0.2s',
+                          minHeight: '48px'
                         }}
                         onMouseDown={(e) => e.currentTarget.style.cursor = 'grabbing'}
                         onMouseUp={(e) => e.currentTarget.style.cursor = 'grab'}
@@ -490,7 +566,8 @@
               flexDirection: isMobile ? 'column' : 'row',
               justifyContent: 'center', 
               gap: isMobile ? '10px' : '15px',
-              marginTop: isMobile ? '25px' : '30px'
+              marginTop: isMobile ? '25px' : '30px',
+              flexWrap: 'wrap'
             }}>
               <button
                 onClick={(e) => {
@@ -515,11 +592,13 @@
                   gap: '8px',
                   fontWeight: 'bold',
                   transition: 'all 0.3s',
-                  opacity: currentPage === 0 ? 1 : 0.9
+                  opacity: currentPage === 0 ? 1 : 0.9,
+                  flex: isMobile ? '1' : 'none',
+                  minHeight: '48px',
+                  touchAction: 'manipulation'
                 }}
               >
-                <ArrowLeft size={18} />
-                Similarities
+                Introduction
               </button>
               <button
                 onClick={(e) => {
@@ -544,11 +623,44 @@
                   gap: '8px',
                   fontWeight: 'bold',
                   transition: 'all 0.3s',
-                  opacity: currentPage === 1 ? 1 : 0.9
+                  opacity: currentPage === 1 ? 1 : 0.9,
+                  flex: isMobile ? '1' : 'none',
+                  minHeight: '48px',
+                  touchAction: 'manipulation'
+                }}
+              >
+                Similarities
+              </button>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (currentPage !== 2) {
+                    setCurrentPage(2);
+                    setSelectedItem(null);
+                    setShowOptions(false);
+                  }
+                }}
+                style={{
+                  padding: isMobile ? '12px 20px' : '12px 24px',
+                  fontSize: isMobile ? '14px' : '15px',
+                  background: currentPage === 2 ? '#BF9A4A' : '#5D1D2E',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  fontWeight: 'bold',
+                  transition: 'all 0.3s',
+                  opacity: currentPage === 2 ? 1 : 0.9,
+                  flex: isMobile ? '1' : 'none',
+                  minHeight: '48px',
+                  touchAction: 'manipulation'
                 }}
               >
                 Differences
-                <ArrowRight size={18} />
               </button>
             </div>
           </div>
