@@ -543,10 +543,28 @@
                               transition: 'all 0.2s',
                               transform: selectedItem?.id === option.id ? 'scale(1.02)' : 'scale(1)',
                               minHeight: '48px',
-                              WebkitTapHighlightColor: 'transparent'
+                              WebkitTapHighlightColor: 'transparent',
+                              position: 'relative'
                             }}
                           >
-                            <div style={{ fontSize: isMobile ? '12px' : '13px', color: '#333', lineHeight: '1.4' }}>
+                            <div style={{
+                              position: 'absolute',
+                              top: '8px',
+                              right: '8px',
+                              background: option.color,
+                              color: '#fff',
+                              borderRadius: '50%',
+                              width: isMobile ? '28px' : '32px',
+                              height: isMobile ? '28px' : '32px',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              fontWeight: 'bold',
+                              fontSize: isMobile ? '12px' : '14px'
+                            }}>
+                              {idx + 1}
+                            </div>
+                            <div style={{ fontSize: isMobile ? '12px' : '13px', color: '#333', lineHeight: '1.4', paddingRight: '40px' }}>
                               {option.text}
                             </div>
                           </div>
